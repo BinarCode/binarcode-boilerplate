@@ -8,7 +8,7 @@ use function Pest\Laravel\getJson;
 
 uses(RefreshDatabase::class);
 
-test('can list users', function() {
+test('can list users', function () {
     User::factory()->create();
 
     getJson(UserRepository::to())->assertJson(function (AssertableJson $json) {
