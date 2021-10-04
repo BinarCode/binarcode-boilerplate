@@ -9,22 +9,32 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
+        "binaryk/laravel-restify": "^5.4",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/horizon": "^5.7",
+        "laravel/sanctum": "^2.11",
         "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
+        "myclabs/php-enum": "^1.8",
         "rector/rector": "^0.11.5",
-        "rector/rector-laravel": "^0.11.1"
+        "rector/rector-laravel": "^0.11.1",
+        "spatie/data-transfer-object": "^3.7",
+        "spatie/laravel-ray": "^1.26"
     },
     "require-dev": {
+        "brianium/paratest": "^6.3",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^2.19",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
+        "nunomaduro/larastan": "^0.7.12",
+        "pestphp/pest": "^1.20",
+        "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest-plugin-parallel": "^0.3.1",
         "phpunit/phpunit": "^9.3.3",
         "psalm/plugin-laravel": "^1.4",
         "spatie/laravel-tail": "^4.3",
@@ -70,6 +80,8 @@
         "format": "./vendor/bin/php-cs-fixer fix --allow-risky=yes",
         "fresh": "php artisan migrate:fresh --seed",
         "psalm": "./vendor/bin/psalm -c psalm.xml",
-        "test": "./vendor/bin/phpunit"
+        "test": "php artisan test --parallel",
+        "pest": "./vendor/bin/pest",
+        "larastan": "vendor/bin/phpstan analyse --memory-limit=2G"
     }
 }
