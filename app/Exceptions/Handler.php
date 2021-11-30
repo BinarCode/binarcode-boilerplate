@@ -7,7 +7,7 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    protected $dontFlash = [
+    protected array $dontFlash = [
         'password',
         'password_confirmation',
     ];
