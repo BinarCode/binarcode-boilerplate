@@ -7,10 +7,13 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    protected array $dontFlash = [
-        'password',
-        'password_confirmation',
-    ];
+    public function getDontFlash(): array
+    {
+        return [
+            'password',
+            'password_confirmation',
+        ];
+    }
 
     public function register()
     {
