@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0",
-        "binaryk/laravel-restify": "^5.4",
+        "binaryk/laravel-restify": "^6.3",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -19,8 +19,7 @@
         "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
         "myclabs/php-enum": "^1.8",
-        "rector/rector": "^0.11.5",
-        "rector/rector-laravel": "^0.11.1",
+        "rector/rector": "^0.12.5",
         "spatie/data-transfer-object": "^3.7",
         "spatie/laravel-ray": "^1.26"
     },
@@ -32,7 +31,7 @@
         "friendsofphp/php-cs-fixer": "^2.19",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "nunomaduro/larastan": "^0.7.12",
+        "nunomaduro/larastan": "^1.0",
         "pestphp/pest": "^1.20",
         "pestphp/pest-plugin-laravel": "^1.1",
         "pestphp/pest-plugin-parallel": "^0.3.1",
