@@ -2,25 +2,27 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function boot(): void
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
     {
-        $this->setupFactory();
+        //
     }
 
     /**
-     * Instruct factory to get the class from the `Database/Factories folder, not domains one.
+     * Bootstrap any application services.
+     *
+     * @return void
      */
-    public function setupFactory(): void
+    public function boot()
     {
-        Factory::guessFactoryNamesUsing(function (string $modelName) {
-            $databaseNamespace = 'Database\\Factories\\';
-
-            return $databaseNamespace.class_basename($modelName).'Factory';
-        });
+        //
     }
 }
