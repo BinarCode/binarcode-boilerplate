@@ -41,6 +41,8 @@ We follow a [Trunk Based Development](https://cloud.google.com/architecture/devo
 - New features, bug fixes, or any other changes are made in short-lived feature branches which are branched off of `main`.
 - These feature branches should be merged back into `main` as soon as possible to avoid long-lived branches that may cause merge conflicts and diverging code bases.
 
+![Trunk-based Development Timeline](public/docs/devops-tech-trunk-based-development-typical-non-trunk-timeline.svg)
+
 ### Pull Requests (PRs)
 
 - The number of open PRs should be kept small to ensure prompt review and feedback.
