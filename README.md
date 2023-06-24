@@ -50,16 +50,10 @@ We follow a [Trunk Based Development](https://cloud.google.com/architecture/devo
 - Code reviews are mandatory. Each PR must be reviewed by at least one other developer before it can be merged.
 - Please ensure to write a clear and concise PR description explaining the changes and the reason for them.
 
-### Commits
-
-- Commit messages should be clear and descriptive, outlining what was changed and why.
-- We follow the "one commit per logical change" rule. If a commit includes several changes that aren't related, it would be hard to understand what the commit is about.
-
 ### Naming Conventions
 
-- Branch names should be concise, descriptive and reflect the task at hand, e.g., `feature/login-system`, `bugfix/password-reset`.
-
----
+- Branch names should be concise, descriptive and reflect the task at hand, e.g., `feat/login-system`, `fix/password-reset`.
+- If (and usually this is the case) the branch is related to a Jira ticket, in that case the branch name should reflect the ticket ID, e.g. `BC-177`
 
 ## Continuous Delivery
 
@@ -71,6 +65,30 @@ To ensure the reliability and stability of the `main` branch, we have a set of C
 - Static Analysis (Larastan): Larastan is used to perform static analysis of the PHP code to detect errors without actually running the code.
 - E2E Tests: If any end-to-end tests exist, they must be passed to ensure the system works together as a whole.
 - TSLint Check: TSLint is used to ensure that the frontend TypeScript code adheres to a consistent style and does not contain any errors or issues.
+
+## How to verify on staging?
+
+Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time. 
+
+Here's the typical workflow for deploying to the staging environment:
+
+1. **Local Development**: Work on your feature or bug fix on your local machine, adhering to the guidelines mentioned in the Github Rules section. 
+
+2. **Create a Pull Request**: Once you've tested your changes locally, push your changes to a remote branch on GitHub and create a pull request to the `main` branch. Ensure that you have added the relevant unit tests and they are passing. 
+
+3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests (if present), and TSLint check on FE. The code is also reviewed by your peers during this time.
+
+4. **Deploy to Staging**: After your pull request has been approved and all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch BC-177, you can go to Envoyer, find the staging application, run deploy and choose your branch. For the frontend, you should either have a Netlify deploy preview or go to your app in Netlify and deploy it from your branch on staging. 
+
+    This deployment strategy means that only one branch can be deployed to a staging environment at a time. To facilitate simultaneous testing by multiple teams, each team should have its own dedicated staging environment if they are all working on the same project.
+
+5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected. 
+
+6. **Merge to Main**: After successful validation in the staging environment, merge your pull request to the `main` branch. The merge triggers the automated deployment to the production environment.
+
+By following these steps, we can ensure that our staging environment is used for testing and validation, and the `main` branch always reflects a stable state of the application ready for production.
+
+----
 
 ## Getting Started
 
