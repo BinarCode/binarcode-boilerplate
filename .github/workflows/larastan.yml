@@ -36,3 +36,6 @@ jobs:
 
       - name: Execute phpstan
         run: composer larastan
+
+      - name: Execute phpinsights
+        run: composer phpinsights
