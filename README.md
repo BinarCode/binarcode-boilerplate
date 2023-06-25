@@ -90,6 +90,13 @@ By following these steps, we can ensure that our staging environment is used for
 
 ----
 
+
+- key metrics of team productivity
+- A/B testing, deliverying features using A/B by default
+-   ac
+
+
+
 ## Getting Started
 
 After cloning the project, follow the below steps to setup the environment:
