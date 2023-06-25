@@ -5,7 +5,7 @@ namespace App\Providers;
 use Binaryk\LaravelRestify\RestifyApplicationServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
-class RestifyServiceProvider extends RestifyApplicationServiceProvider
+final class RestifyServiceProvider extends RestifyApplicationServiceProvider
 {
     protected function gate(): void
     {
