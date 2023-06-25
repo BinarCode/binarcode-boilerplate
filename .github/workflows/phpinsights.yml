@@ -1,10 +1,9 @@
-name: Standalone
+name: PHP Insights
 
 on:
-  pull_request: ~
   push:
-    branches:
-      - main
+  pull_request:
+    types: [opened]
 
 jobs:
   ci:
