@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'domain' => env('TELESCOPE_DOMAIN', null),
+    'domain' => env('TELESCOPE_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -116,14 +116,23 @@ return [
 
     'watchers' => [
         Watchers\BatchWatcher::class => env('TELESCOPE_BATCH_WATCHER', true),
-        Watchers\CacheWatcher::class => env('TELESCOPE_CACHE_WATCHER', true),
+
+        Watchers\CacheWatcher::class => [
+            'enabled' => env('TELESCOPE_CACHE_WATCHER', true),
+            'hidden' => [],
+        ],
+
+        Watchers\ClientRequestWatcher::class => env('TELESCOPE_CLIENT_REQUEST_WATCHER', true),
 
         Watchers\CommandWatcher::class => [
             'enabled' => env('TELESCOPE_COMMAND_WATCHER', true),
             'ignore' => [],
         ],
 
-        Watchers\DumpWatcher::class => env('TELESCOPE_DUMP_WATCHER', true),
+        Watchers\DumpWatcher::class => [
+            'enabled' => env('TELESCOPE_DUMP_WATCHER', true),
+            'always' => env('TELESCOPE_DUMP_WATCHER_ALWAYS', false),
+        ],
 
         Watchers\EventWatcher::class => [
             'enabled' => env('TELESCOPE_EVENT_WATCHER', true),
@@ -131,8 +140,21 @@ return [
         ],
 
         Watchers\ExceptionWatcher::class => env('TELESCOPE_EXCEPTION_WATCHER', true),
+
+        Watchers\GateWatcher::class => [
+            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
+            'ignore_abilities' => [],
+            'ignore_packages' => true,
+            'ignore_paths' => [],
+        ],
+
         Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', true),
-        Watchers\LogWatcher::class => env('TELESCOPE_LOG_WATCHER', true),
+
+        Watchers\LogWatcher::class => [
+            'enabled' => env('TELESCOPE_LOG_WATCHER', true),
+            'level' => 'error',
+        ],
+
         Watchers\MailWatcher::class => env('TELESCOPE_MAIL_WATCHER', true),
 
         Watchers\ModelWatcher::class => [
@@ -146,6 +168,7 @@ return [
         Watchers\QueryWatcher::class => [
             'enabled' => env('TELESCOPE_QUERY_WATCHER', true),
             'ignore_packages' => true,
+            'ignore_paths' => [],
             'slow' => 100,
         ],
 
@@ -154,16 +177,11 @@ return [
         Watchers\RequestWatcher::class => [
             'enabled' => env('TELESCOPE_REQUEST_WATCHER', true),
             'size_limit' => env('TELESCOPE_RESPONSE_SIZE_LIMIT', 64),
-        ],
-
-        Watchers\GateWatcher::class => [
-            'enabled' => env('TELESCOPE_GATE_WATCHER', true),
-            'ignore_abilities' => [],
-            'ignore_packages' => true,
+            'ignore_http_methods' => [],
+            'ignore_status_codes' => [],
         ],
 
         Watchers\ScheduleWatcher::class => env('TELESCOPE_SCHEDULE_WATCHER', true),
-
         Watchers\ViewWatcher::class => env('TELESCOPE_VIEW_WATCHER', true),
     ],
 ];

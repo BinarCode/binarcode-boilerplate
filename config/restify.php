@@ -47,7 +47,7 @@ return [
 
         'user_verify_url' => env('FRONTEND_APP_URL').'/verify/{id}/{emailHash}',
 
-        'user_model' => \Illuminate\Foundation\Auth\User::class,
+        'user_model' => "\App\Models\User",
     ],
 
     /*
@@ -95,24 +95,9 @@ return [
 
     'middleware' => [
         'api',
+        //'auth:sanctum',
         DispatchRestifyStartingEvent::class,
-//        AuthorizeRestify::class,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Used to format data.
-    |--------------------------------------------------------------------------
-    |
-    */
-    'casts' => [
-        /*
-        |--------------------------------------------------------------------------
-        | Casting the related entities format.
-        |--------------------------------------------------------------------------
-        |
-        */
-        'related' => \Binaryk\LaravelRestify\Repositories\Casts\RelatedCast::class,
+        AuthorizeRestify::class,
     ],
 
     /*
@@ -125,5 +110,59 @@ return [
         | Repository used to list logs.
         */
         'repository' => ActionLogRepository::class,
+
+        /**
+         | Inform restify to log or not action logs.
+         */
+        'enable' => env('RESTIFY_ENABLE_LOGS', true),
+
+        /**
+        | Inform restify to log model changes from any source, or just restify. Set to `false` to log just restify logs.
+         */
+        'all' => env('RESTIFY_WRITE_ALL_LOGS', false),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Restify Search
+    |--------------------------------------------------------------------------
+    */
+    'search' => [
+        /*
+        | Specify either the search should be case-sensitive or not.
+        */
+        'case_sensitive' => true,
+    ],
+
+    'repositories' => [
+
+        /*
+        | Specify either to serialize index meta (policy) information or not. For performance reasons we recommend disabling it.
+        */
+        'serialize_index_meta' => false,
+
+        /*
+        | Specify either to serialize show meta (policy) information or not.
+        */
+        'serialize_show_meta' => true,
+    ],
+
+    'cache' => [
+        /*
+        | Specify the cache configuration for the resources policies.
+        | When enabled, methods from the policy will be cached for the active user.
+        */
+        'policies' => [
+            'enabled' => false,
+
+            'ttl' => 5 * 60, // seconds
+        ],
+    ],
+
+    /*
+    | Specify if restify can call OpenAI for solution generation.
+    |
+    | By default this feature is enabled, but you still have to extend the Exception handler with the Restify one and set the API key.
+     */
+    'ai_solutions' => true,
 ];

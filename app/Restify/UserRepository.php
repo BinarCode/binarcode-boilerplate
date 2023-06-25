@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Restify\Users;
+namespace App\Restify;
 
 use App\Domains\Users\Models\User;
-use App\Restify\Repository;
-use Binaryk\LaravelRestify\Fields\Field;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 class UserRepository extends Repository
@@ -14,11 +12,9 @@ class UserRepository extends Repository
     public function fields(RestifyRequest $request): array
     {
         return [
-            Field::make('first_name')->rules('required'),
+            field('name')->rules('required'),
 
-            Field::make('last_name')->rules('required'),
-
-            Field::make('email')->storingRules('required', 'unique:users')->messages([
+            field('email')->storingRules('required', 'unique:users')->messages([
                 'required' => 'This field is required.',
             ]),
         ];

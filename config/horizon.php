@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'domain' => null,
+    'domain' => env('HORIZON_DOMAIN'),
 
     /*
     |--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'path' => 'horizon',
+    'path' => env('HORIZON_PATH', 'horizon'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ return [
 
     'prefix' => env(
         'HORIZON_PREFIX',
-        Str::slug(env('APP_NAME', 'laravel'), '_').'_horizon:',
+        Str::slug(env('APP_NAME', 'laravel'), '_').'_horizon:'
     ),
 
     /*
@@ -105,6 +105,21 @@ return [
         'recent_failed' => 10080,
         'failed' => 10080,
         'monitored' => 10080,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Silenced Jobs
+    |--------------------------------------------------------------------------
+    |
+    | Silencing a job will instruct Horizon to not place the job in the list
+    | of completed jobs within the Horizon dashboard. This setting may be
+    | used to fully remove any noisy jobs from the completed jobs list.
+    |
+    */
+
+    'silenced' => [
+        // App\Jobs\ExampleJob::class,
     ],
 
     /*
@@ -169,9 +184,13 @@ return [
             'connection' => 'redis',
             'queue' => ['default'],
             'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
             'maxProcesses' => 1,
+            'maxTime' => 0,
+            'maxJobs' => 0,
             'memory' => 128,
             'tries' => 1,
+            'timeout' => 60,
             'nice' => 0,
         ],
     ],
