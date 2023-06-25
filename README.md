@@ -15,17 +15,32 @@ This documentation serves as a roadmap for smooth collaboration, high-quality wo
 
 Our software development practices are based on principles of [Continuous Delivery](https://dora.dev/devops-capabilities/technical/continuous-delivery/), as highlighted in the DORA research ([DORA Research Program](https://services.google.com/fh/files/misc/dora_research_program.pdf)) and advocated in the book [Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339). 
 
-DevOps Research and Assessment (DORA), a six-year research program, along with the insights from the book "Accelerate", have shed light on the practices that high-performing software teams adopt. Here are the key findings condensed into a more readable form:
+## DORA
 
-- 💼 **Small Batch Sizes & Frequent Code Deployments**: High-performing teams often deliver work in small batches and deploy code frequently.
+![DORA](public/docs/dora-cover.png)
 
-- 🌳 **Trunk-Based Development**: High performers consistently employ this practice, leading to better overall performance.
+The [DevOps Research and Assessment](https://dora.dev/) (DORA) program was started in 2014 by Dr. Nicole Forsgren, Jez Humble, and Gene Kim. Their aim was to investigate the practices, tools, and culture models that make high-performing teams effective. Over the years, the DORA team's research has made significant contributions to our understanding of software development and operations, helping to shape the principles of modern DevOps practices. In 2018, the DORA team became a part of Google Cloud, allowing them to further extend their reach and impact.
 
-- 🔄 **Continuous Delivery Impact**: Teams practicing Continuous Delivery, including comprehensive configuration management, automated testing, and deployment, experience lower change failure rates and faster recovery times.
+## Accelerate
 
-- 👥 **Culture & Collaboration**: A culture promoting information sharing, trust, and collaboration correlates with better software delivery performance and reduced burnout.
 
-- 📈 **Performance & Competitive Advantage**: Effective software delivery and operational practices can drive profitability, productivity, customer satisfaction, and overall competitive advantage.
+![Accelerate](public/docs/accelerate-book.jpg)
+
+"[Accelerate](https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339): The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations" is a pivotal book released in 2018 by Dr. Nicole Forsgren, Jez Humble, and Gene Kim. Drawing on the same research behind the DORA program, which the authors also founded, this book offers an in-depth analysis of effective software development and operational practices.
+
+"Accelerate" is based on extensive empirical research covering thousands of tech professionals and demonstrates how to measure software team performance and the factors influencing it. It has significantly influenced organizations' understanding of DevOps' role, offering a practical framework for adopting these principles and improving software delivery.
+
+### Key findings
+
+💼 **Small Batch Sizes & Frequent Code Deployments**: High-performing teams often deliver work in small batches and deploy code frequently.
+
+🌳 **Trunk-Based Development**: High performers consistently employ this practice, leading to better overall performance.
+
+🔄 **Continuous Delivery Impact**: Teams practicing Continuous Delivery, including comprehensive configuration management, automated testing, and deployment, experience lower change failure rates and faster recovery times.
+
+👥 **Culture & Collaboration**: A culture promoting information sharing, trust, and collaboration correlates with better software delivery performance and reduced burnout.
+
+📈 **Performance & Competitive Advantage**: Effective software delivery and operational practices can drive profitability, productivity, customer satisfaction, and overall competitive advantage.
 
 These insights guide our team's development practices, striving for continuous improvement and high performance.
 
