@@ -1,4 +1,4 @@
-name: Larastan
+name: Static analysis
 
 on:
   push:
