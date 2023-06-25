@@ -84,8 +84,9 @@ This practice involves developers regularly merging their code changes into a ce
 
 To ensure the reliability and stability of the `main` branch, we have a set of CI checks that must be passed before any code can be merged. These checks are implemented as GitHub Actions and include:
 
-- [Unit & Feature Tests](): These ensure that the individual units of your code and their interactions are working as expected.
-- [Static Analysis (Larastan)](): Larastan is used to perform static analysis of the PHP code to detect errors without actually running the code.
+- [Unit & Feature Tests](.github/workflows/tests.yml): These ensure that the individual units of your code and their interactions are working as expected.
+- [Static Analysis (Larastan)](.github/workflows/larastan.yml): Larastan is used to perform static analysis of the PHP code to detect errors without actually running the code.
+- [Formatting (Pint)](.github/workflows/pint.yml): [Laravel Pint](https://laravel.com/docs/pint) is an opinionated PHP code style fixer for minimalists.
 - E2E Tests (optional): If any end-to-end tests exist, they must be passed to ensure the system works together as a whole.
 - TSLint Check: TSLint is used to ensure that the frontend TypeScript code adheres to a consistent style and does not contain any errors or issues.
 
@@ -93,9 +94,19 @@ To ensure the reliability and stability of the `main` branch, we have a set of C
 
 This is the logical extension of CI. It's an approach where code changes are automatically built, tested, and prepared for release to production. It ensures that you can release new changes to your customers quickly and sustainably.
 
-## Continuous Deployment (also CD)
+When the branch is merged (manually) to the `main` branch [an action](.github/workflows/auto-release.yml) will create a project tag.
 
-This is a step further than Continuous Delivery. Here, every change that passes the automated tests is automatically deployed to production. It eliminates the need for manual intervention in the deployment process.
+Since we use Netlify for the frontend and Envoyer for the backend usually, let's see how to enable auto deployment on both frontend and backend. 
+
+### CD - Backend
+
+Go in envoyer in the project settings and enable auto deploy when code is pushed:
+
+![CD](public/docs/envoyer-cd.png)
+
+
+### CD - Frontend
+
 
 
 
