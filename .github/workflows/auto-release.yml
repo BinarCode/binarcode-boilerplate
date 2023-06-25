@@ -1,0 +1,69 @@
+name: Release
+
+on:
+#  pull_request:
+#    types:
+#      - closed
+#    branches:
+#      - "main"
+
+jobs:
+  release:
+    name: Create release
+    if: github.event.pull_request.merged == true
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ncipollo/release-action@v1
+        with:
+          name: ${{ github.event.pull_request.title }}
+          tag: ${{ github.event.pull_request.title }}
+          body: ${{ github.event.pull_request.body }}
+          prerelease: false
+          # uses the default GitHub actions app token
+  postToSlack:
+    name: Post Release to Slack
+    needs: release
+    if: github.event.pull_request.merged == true
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: slackapi/slack-github-action@v1.22.0
+        with:
+          channel-id: 'github_releases'
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "${{ github.event.pull_request.title }}"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ${{ toJSON(github.event.pull_request.body) }}
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Release"
+                      },
+                      "url": ""
+                    }
+                  ]
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_RELEASE_BOT_TOKEN }}

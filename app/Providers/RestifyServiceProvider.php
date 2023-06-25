@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Binaryk\LaravelRestify\RestifyApplicationServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class RestifyServiceProvider extends RestifyApplicationServiceProvider
 {

@@ -5,7 +5,7 @@ namespace App\Domain\User\Policies;
 use App\Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+final class UserPolicy
 {
     use HandlesAuthorization;
 

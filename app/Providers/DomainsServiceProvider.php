@@ -10,10 +10,12 @@ class DomainsServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        Factory::guessFactoryNamesUsing(function (string $modelName) {
-            $domain = Str::afterLast($modelName, '\\');
+        Factory::guessFactoryNamesUsing(
+            static function (string $modelName): string {
+                $domain = Str::afterLast($modelName, '\\');
 
-            return "\\App\\Domain\\{$domain}\\Factories\\" . $domain . 'Factory';
-        });
+                return "\\App\\Domain\\{$domain}\\Factories\\".$domain.'Factory';
+            }
+        );
     }
 }
