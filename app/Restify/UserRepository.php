@@ -2,7 +2,7 @@
 
 namespace App\Restify;
 
-use App\Domains\Users\Models\User;
+use App\Domain\User\Models\User;
 use Binaryk\LaravelRestify\Http\Requests\RestifyRequest;
 
 class UserRepository extends Repository

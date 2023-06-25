@@ -1,19 +1,32 @@
 <?php
 
-use App\Domains\Users\Models\User;
-use App\Restify\Users\UserRepository;
+namespace Tests\Domain\Users;
+
+use App\Domain\User\Models\User;
+use App\Restify\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Testing\Fluent\AssertableJson;
-use function Pest\Laravel\getJson;
+use Laravel\Sanctum\Sanctum;
+use Tests\TestCase;
 
-uses(RefreshDatabase::class);
+class UserRepositoryTest extends TestCase
+{
+    use RefreshDatabase;
 
-test('can list users', function () {
-    User::factory()->create();
+    public function test_can_list_users(): void
+    {
+        $user = User::factory()->create();
 
-    getJson(UserRepository::to())->assertJson(function (AssertableJson $json) {
-        $json
-            ->has('data.0.attributes.email')
-            ->etc();
-    })->assertOk();
-});
+        Sanctum::actingAs($user);
+
+        $this->getJson(UserRepository::route())
+            ->assertJson(fn(AssertableJson $json) => $json
+                ->has('meta')
+                ->has('links')
+                ->has('data')
+                ->etc()
+            )
+            ->assertOk();
+    }
+}

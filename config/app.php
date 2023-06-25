@@ -170,7 +170,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\RestifyServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        App\Providers\DomainsServiceProvider::class,
     ])->toArray(),
 
     /*
