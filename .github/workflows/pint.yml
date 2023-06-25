@@ -16,10 +16,10 @@ jobs:
         with:
           preset: laravel
 
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.3
-        with:
-          # This part is also where you can pass other options, for example:
-          prettier_options: --config ./frontend/.prettierrc.json --write ./frontend/**/*.{js,ts,md,vue,json,html,css}
-          only_changed: True
-          commit_message: "[skip netlify]"
+#      - name: Prettify code
+#        uses: creyD/prettier_action@v4.3
+#        with:
+#          # This part is also where you can pass other options, for example:
+#          prettier_options: --config ./frontend/.prettierrc.json --write ./frontend/**/*.{js,ts,md,vue,json,html,css}
+#          only_changed: True
+#          commit_message: "[skip netlify]"
