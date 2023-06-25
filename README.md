@@ -60,26 +60,44 @@ We follow a [Trunk Based Development](https://cloud.google.com/architecture/devo
 
 ### Pull Requests (PRs)
 
-- The number of open PRs should be kept small to ensure prompt review and feedback.
-- A PR should be related to only one feature or bugfix. This makes it easier to review and understand the changes.
-- Code reviews are mandatory. Each PR must be reviewed by at least one other developer before it can be merged.
-- Please ensure to write a clear and concise PR description explaining the changes and the reason for them.
+📑 **Small Number of Open PRs**: Limit the number of open PRs to streamline review and feedback.
+
+📊 **Single Feature/ Bugfix per PR**: Keep PRs focused on one issue for easier review and understanding.
+
+👀 **Mandatory Code Reviews**: Every PR must undergo a review from at least one other developer.
+
+📝 **Fill the PR Descriptions template**: Be concise and clear in your PR descriptions, use the profided template to fill it.
 
 ### Naming Conventions
 
 - Branch names should be concise, descriptive and reflect the task at hand, e.g., `feat/login-system`, `fix/password-reset`.
 - If (and usually this is the case) the branch is related to a Jira ticket, in that case the branch name should reflect the ticket ID, e.g. `BC-177`
 
-## Continuous Delivery
 
-In line with the practices of Continuous Delivery, any code that is merged into the `main` branch should be deployable. Our team ensures that deployment to production happens automatically whenever code is merged into `main`. 
+# Continuous Delivery
 
-To ensure the reliability and stability of the `main` branch, we have a set of CI/CD pipeline checks that must be passed before any code can be merged. These checks are implemented as GitHub Actions and include:
+In line with the practices of [Continuous Delivery](https://dora.dev/devops-capabilities/technical/continuous-delivery/), any code that is merged into the `main` branch should be deployable. The team shoud ensure that deployment to production happens automatically whenever code is merged into `main`. 
 
-- Unit & Feature Tests: These ensure that the individual units of your code and their interactions are working as expected.
-- Static Analysis (Larastan): Larastan is used to perform static analysis of the PHP code to detect errors without actually running the code.
-- E2E Tests: If any end-to-end tests exist, they must be passed to ensure the system works together as a whole.
+## Continuous Integration (CI)
+
+This practice involves developers regularly merging their code changes into a central repository, preferably several times a day. After the code is merged, automated builds and tests are run to catch and fix integration errors quickly. The goal is to avoid "integration hell," where merging code that developers have worked on separately becomes problematic due to significant divergence in the codebase.
+
+To ensure the reliability and stability of the `main` branch, we have a set of CI checks that must be passed before any code can be merged. These checks are implemented as GitHub Actions and include:
+
+- [Unit & Feature Tests](): These ensure that the individual units of your code and their interactions are working as expected.
+- [Static Analysis (Larastan)](): Larastan is used to perform static analysis of the PHP code to detect errors without actually running the code.
+- E2E Tests (optional): If any end-to-end tests exist, they must be passed to ensure the system works together as a whole.
 - TSLint Check: TSLint is used to ensure that the frontend TypeScript code adheres to a consistent style and does not contain any errors or issues.
+
+## Continuous Delivery (CD)
+
+This is the logical extension of CI. It's an approach where code changes are automatically built, tested, and prepared for release to production. It ensures that you can release new changes to your customers quickly and sustainably.
+
+## Continuous Deployment (also CD)
+
+This is a step further than Continuous Delivery. Here, every change that passes the automated tests is automatically deployed to production. It eliminates the need for manual intervention in the deployment process.
+
+
 
 ## How to verify on staging?
 
