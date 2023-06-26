@@ -107,6 +107,28 @@ Go in envoyer in the project settings and enable auto deploy when code is pushed
 
 ### CD - Frontend
 
+Given the difference in build times between the backend (deployed via Envoyer) and frontend (deployed via Netlify), it's possible for the backend changes to go live while the frontend is still building. If there are breaking changes between the two, it could lead to inconsistencies or issues.
+
+To handle such situations, consider the following strategy:
+
+### Building Frontend Assets in GitHub Actions
+
+You can build the frontend assets as part of your GitHub Actions workflow. Once the build is complete, a subsequent step in your workflow could call the Envoyer webhook. This would trigger the backend deployment. At the same time, you can also pull the latest changes from the "main" branch on Netlify. This strategy ensures that both your backend and frontend are in sync when changes go live.
+
+## Backend and Frontend Deployment Procedure
+
+With this strategy, the deployment procedure would look like this:
+
+1. Ensure your changes are ready and tested in the appropriate branches.
+2. Merge your changes to the "main" branch.
+3. The merge triggers the CD pipeline. Before merging to "main", the code should pass all checks (unit & feature tests, static analysis, E2E tests, etc.).
+4. Once all checks have passed, GitHub Actions will start building the frontend assets.
+5. After building the frontend, it will add assets into the release tag (say 1.2.0)
+6. The GitHub Actions workflow calls the Envoyer webhook, triggering the backend deployment.
+7. The last step in Envoyer will trigger the deploy on netlify wich will simply pull the assets built with gh action
+
+By using this procedure, you ensure that both backend and frontend are always in sync when deployed, minimizing potential issues for your users. Always ensure thorough testing before deploying and monitor your application closely after deployment for any unexpected issues.
+
 
 
 
