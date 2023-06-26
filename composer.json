@@ -1,56 +1,29 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": [
-        "framework",
-        "laravel"
-    ],
+    "description": "The skeleton application for the Laravel framework.",
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.0",
-        "binaryk/laravel-restify": "^6.3",
-        "fideloper/proxy": "^4.4",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.12",
-        "laravel/horizon": "^5.7",
-        "laravel/sanctum": "^2.11",
-        "laravel/telescope": "^4.4",
-        "laravel/tinker": "^2.5",
-        "myclabs/php-enum": "^1.8",
-        "rector/rector": "^0.12.5",
-        "spatie/data-transfer-object": "^3.7",
-        "spatie/laravel-ray": "^1.26"
+        "php": "^8.1",
+        "binaryk/laravel-restify": "^8.0",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^10.10",
+        "laravel/horizon": "^5.17",
+        "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.15",
+        "laravel/tinker": "^2.8"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^2.10",
-        "brianium/paratest": "^6.3",
-        "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
-        "friendsofphp/php-cs-fixer": "^2.19",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "nunomaduro/larastan": "^1.0",
-        "pestphp/pest": "^1.20",
-        "pestphp/pest-plugin-laravel": "^1.1",
-        "pestphp/pest-plugin-parallel": "^0.3.1",
-        "pestphp/pest-plugin-watch": "1.x-dev",
-        "phpunit/phpunit": "^9.3.3",
-        "psalm/plugin-laravel": "^1.4",
-        "spatie/laravel-tail": "^4.3",
-        "spatie/ray": "^1.22",
-        "stechstudio/laravel-php-cs-fixer": "^2.2"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
+        "laravel/pint": "^1.0",
+        "laravel/sail": "^1.18",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^7.0",
+        "nunomaduro/larastan": "^2.0",
+        "nunomaduro/phpinsights": "^2.8",
+        "phpunit/phpunit": "^10.1",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -64,12 +37,13 @@
             "Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -77,21 +51,28 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "post-update-cmd": [
-            "@composer ide-helper"
-        ],
-        "ide-helper": [
-            "@php artisan ide-helper:eloquent",
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta",
-            "@php artisan ide-helper:models --nowrite"
-        ],
         "rector": "./vendor/bin/rector process app",
-        "format": "./vendor/bin/php-cs-fixer fix --allow-risky=yes",
-        "fresh": "php artisan migrate:fresh --seed",
-        "psalm": "./vendor/bin/psalm -c psalm.xml",
-        "test": "php artisan test --parallel",
-        "pest": "./vendor/bin/pest --watch",
-        "larastan": "vendor/bin/phpstan analyse --memory-limit=2G"
-    }
+        "fresh": "php artisan fresh --seed",
+        "larastan": "vendor/bin/phpstan analyse --memory-limit=2G",
+        "phpinsights": "./vendor/bin/phpinsights analyse --ansi -v --no-interaction --disable-security-check --flush-cache",
+        "test": "php artisan test --parallel --stop-on-failure",
+        "pint": "./vendor/bin/pint"
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
