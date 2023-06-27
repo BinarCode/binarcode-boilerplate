@@ -130,8 +130,6 @@ With this strategy, the deployment procedure would look like this:
 By using this procedure, you ensure that both backend and frontend are always in sync when deployed, minimizing potential issues for your users. Always ensure thorough testing before deploying and monitor your application closely after deployment for any unexpected issues.
 
 
-
-
 ## How to verify on staging?
 
 Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time. 
@@ -161,6 +159,8 @@ By following these steps, we can ensure that our staging environment is used for
 - A/B testing, deliverying features using A/B by default
 -   ac
 
+
+# Logging
 
 
 ## Getting Started
