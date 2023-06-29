@@ -44,6 +44,9 @@ The [DevOps Research and Assessment](https://dora.dev/) (DORA) program was start
 
 These insights guide our team's development practices, striving for continuous improvement and high performance.
 
+
+![METRICS](public/docs/dora-metrics.png)
+
 ## Github Rules
 
 The purpose of these guidelines is to create a clean, streamlined, and efficient process for collaboration to build and deliver quality software. 
