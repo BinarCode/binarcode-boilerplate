@@ -16,6 +16,7 @@
     },
     "require-dev": {
         "brianium/paratest": "^7.2",
+        "driftingly/rector-laravel": "^0.21.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -24,6 +25,7 @@
         "nunomaduro/larastan": "^2.0",
         "nunomaduro/phpinsights": "^2.8",
         "phpunit/phpunit": "^10.1",
+        "rector/rector": "^0.17.2",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -56,7 +58,7 @@
         "fresh": "php artisan fresh --seed",
         "larastan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "phpinsights": "./vendor/bin/phpinsights analyse --ansi -v --no-interaction --disable-security-check --flush-cache",
-        "test": "php artisan test --aarallel --stop-on-failure",
+        "test": "php artisan test --naarallel --stop-on-failure",
         "pint": "./vendor/bin/pint"
     },
     "extra": {

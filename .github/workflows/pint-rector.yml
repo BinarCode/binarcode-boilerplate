@@ -1,0 +1,44 @@
+name: PintRector
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - 'dependabot/npm_and_yarn/*'
+    paths-ignore:
+      - 'frontend/**'
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1' # Specify your PHP version here
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Run Rector
+        run: composer rector
+
+      - name: Run Pint
+        run: composer pint
+
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: PHP Linting (Pint)
+          skip_fetch: true
