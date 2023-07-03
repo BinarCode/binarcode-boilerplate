@@ -14,7 +14,7 @@ final class UserPolicy
         return true;
     }
 
-    public function show(User $user = null, User $model): bool
+    public function show(User $model, User $user = null): bool
     {
         return true;
     }
