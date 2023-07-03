@@ -20,6 +20,7 @@ jobs:
           body: ${{ github.event.pull_request.body }}
           prerelease: false
           # uses the default GitHub actions app token
+          # github_token: ${{ secrets.GITHUB_TOKEN }} # https://github.com/settings/tokens
   postToSlack:
     name: Post Release to Slack
     needs: release

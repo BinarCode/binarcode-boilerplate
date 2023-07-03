@@ -56,7 +56,7 @@
         "fresh": "php artisan fresh --seed",
         "larastan": "vendor/bin/phpstan analyse --memory-limit=2G",
         "phpinsights": "./vendor/bin/phpinsights analyse --ansi -v --no-interaction --disable-security-check --flush-cache",
-        "test": "php artisan test --parallel --stop-on-failure",
+        "test": "php artisan test --aarallel --stop-on-failure",
         "pint": "./vendor/bin/pint"
     },
     "extra": {
