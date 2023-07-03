@@ -5,7 +5,7 @@ on:
     types: [ closed ]
     branches:
       - "main"
-G
+
 jobs:
   release:
     name: Create release
@@ -28,7 +28,7 @@ jobs:
     steps:
       - uses: slackapi/slack-github-action@v1.22.0
         with:
-          channel-id: 'github_releases'
+          channel-id: 'github_releases' # TODO: CHANGE ME
           payload: |
             {
               "blocks": [
@@ -65,4 +65,6 @@ jobs:
               ]
             }
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }} # TODO: Change this into the slack apps oAuth https://api.slack.com/apps/APP_ID/oauth?
+
+# TODO: Make sure the app is in the slack channel `/invite @APP_NAME`

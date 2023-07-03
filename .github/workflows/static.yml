@@ -2,8 +2,12 @@ name: Static analysis
 
 on:
   push:
+    paths-ignore:
+      - 'frontend/**'
   pull_request:
     types: [opened]
+    paths-ignore:
+      - 'frontend/**'
 
 jobs:
   larastan:
