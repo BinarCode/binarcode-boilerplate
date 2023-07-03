@@ -1,12 +1,11 @@
 name: Release
 
 on:
-#  pull_request:
-#    types:
-#      - closed
-#    branches:
-#      - "main"
-
+  pull_request:
+    types: [ closed ]
+    branches:
+      - "main"
+G
 jobs:
   release:
     name: Create release
@@ -66,4 +65,4 @@ jobs:
               ]
             }
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_RELEASE_BOT_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
