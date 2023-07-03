@@ -18,7 +18,7 @@ final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         $this->hideSensitiveRequestDetails();
 
-        Telescope::filter(function (IncomingEntry $entry) {
+        Telescope::filter(function (IncomingEntry $entry): bool {
             if ($this->app->environment('local')) {
                 return true;
             }
@@ -56,7 +56,7 @@ final class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
      */
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function ($user) {
+        Gate::define('viewTelescope', function ($user): bool {
             return true;
         });
     }

@@ -13,6 +13,9 @@ final class UserFactory extends Factory
 {
     protected $model = User::class;
 
+    /**
+     * @return array{first_name: string, last_name: string, email: string, email_verified_at: \Illuminate\Support\Carbon, password: string, remember_token: string}
+     */
     public function definition(): array
     {
         return [
