@@ -333,11 +333,9 @@ For monitoring, we utilize:
 When the system can recover from an exception that originates in the domain (business) layer, this exception is pushed up to the consumer layer. The consumer (which might be Controllers, Restify, Queued Jobs, or Commands) then decides whether to log the exception or return it to the client. This approach allows us to effectively manage exceptions and maintain stability.
 
 
-## Getting Started
+## Backend
 
-After cloning the project, follow the below steps to setup the environment:
-
-### 1. Backend Setup:
+### Setup
 
 Assuming you have composer and PHP installed in your environment, navigate to the project's directory and run:
 
@@ -356,6 +354,23 @@ And finally, start the server:
 ```bash
 php artisan serve
 ```
+
+## CI/CD Tools
+* [PHPUnit](https://phpunit.de/) for integration and unit tests.
+* [PHPInsights](https://github.com/nunomaduro/phpinsights) for automatic code complexity measurement.
+* [Rector](https://github.com/rectorphp/rector) for code quality improvement and dead code elimination.
+* [Pint](https://laravel.com/docs/10.x/pint) for automatic code formatting according to [PSR12](https://www.php-fig.org/psr/psr-12/) standards.
+* [PHPStan](https://phpstan.org/) for static code analysis.
+
+## Package Integration
+
+Our [Restify](https://restify.binarcode.com/) package is integrated, providing a [JSON:API](https://jsonapi.org/) **standard API**.
+
+## Admin Panel and System Management
+
+* [Laravel Nova](https://nova.laravel.com/) is integrated for the super admin panel.
+* [Laravel Telescope](https://laravel.com/docs/10.x/telescope) is used for system logging.
+* [Laravel Horizon](https://laravel.com/docs/10.x/horizon) is used for queue and async jobs management.
 
 ### 2. Frontend Setup:
 
