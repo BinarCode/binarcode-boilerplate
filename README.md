@@ -280,9 +280,57 @@ Remember, merging frequently doesn't mean exposing incomplete work. It's about i
 With feature flags, we can ensure that code deployed to `main` is production-ready, but only accessible when we decide the time is right. As a result, we get the best of both worlds: continuous integration and delivery of code, and the control to release new features when we're confident they're ready for all users.
 
 
-# Logging
+# Monitoring and Logging
 
+## Observability
 
+Observability is a core principle in our system's operation. We strive to not only know how our system is working but also predict if it might fail in the future. This involves monitoring every aspect of our system closely.
+
+## Types of Logs
+
+Our system generates three types of logs:
+
+1. **Information**: These logs offer diagnostic information that helps us understand how the system is performing. If you inspect these logs, they should provide sufficient information to help you diagnose any issues that might arise.
+
+2. **Warnings**: Warnings are generated when something doesn't go as smoothly as expected, but the system is still able to function—for example, when an API call retries due to a delay. These logs help us identify potential issues that might escalate if not addressed promptly.
+
+3. **Errors**: Error logs indicate that something has gone wrong, such as a timeout or data loss. The system attempted an operation but had to give up. All errors generate an alert in our Slack channel and require a dedicated ticket for resolution. Sometimes, upon investigation, we might find that what was initially classified as an error is more appropriately a warning.
+
+### Slack Notifications
+
+Our system is set to send real-time notifications to a dedicated Slack channel in case of errors. Every error generates a unique alert to ensure no issue goes unnoticed.
+
+We developed a lightweight package to handle that called [laravel-developer](https://github.com/BinarCode/laravel-developer#send-exception-to-slack).
+
+For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
+
+## The Purpose of Logging
+
+Logging serves several critical functions:
+
+- **System Monitoring**: Logs provide real-time insights into our system's operation. They allow us to track the system's performance and identify any potential issues.
+  
+- **Noise Reduction**: Proper logging helps filter out irrelevant information, reducing noise and making problem diagnosis easier.
+
+- **Error Verification**: Logs help us distinguish between actual errors and false positives.
+
+- **Post-deployment Tracking**: Following a deployment, logs allow us to track warnings generated per second and any changes in this rate, helping identify any deployment-related issues.
+
+- **Automated Monitoring**: As humans, we are prone to errors and inefficiencies. Automating log generation and monitoring reduces human error and ensures consistent tracking.
+
+- **Error Visibility**: It's crucial not to hide any errors. If an error is caught but not handled, it should be logged as an error. If it's caught and handled appropriately, it should be logged as a warning. Clear guidelines for this are provided in our engineering handbooks.
+
+## Monitoring Tools
+
+For monitoring, we utilize:
+
+- [Oh Dear](https://ohdear.app/sites): This is used to monitor scheduled commands, providing critical information on their performance and alerting us if anything goes wrong.
+
+- [Flare](https://flareapp.io/projects): Flare is a tool tailored for Laravel. It monitors logs and alerts us over Slack if any exceptions are thrown.
+
+## Push exceptions to the consumer
+
+When the system can recover from an exception that originates in the domain (business) layer, this exception is pushed up to the consumer layer. The consumer (which might be Controllers, Restify, Queued Jobs, or Commands) then decides whether to log the exception or return it to the client. This approach allows us to effectively manage exceptions and maintain stability.
 
 
 ## Getting Started
