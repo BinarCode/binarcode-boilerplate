@@ -332,6 +332,7 @@ For monitoring, we utilize:
 
 When the system can recover from an exception that originates in the domain (business) layer, this exception is pushed up to the consumer layer. The consumer (which might be Controllers, Restify, Queued Jobs, or Commands) then decides whether to log the exception or return it to the client. This approach allows us to effectively manage exceptions and maintain stability.
 
+![DORA](public/docs/ddd-layers.png)
 
 ## Backend
 
