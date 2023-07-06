@@ -291,6 +291,8 @@ To setup Split.io synchronization as a Forge daemon, use the following command:
 split-sync -apikey "your-split-io-secret-api-key"
 ```
 
+[Split sync docs](https://help.split.io/hc/en-us/articles/360019686092-Split-Synchronizer)
+
 # Monitoring and Logging
 
 ## Observability
