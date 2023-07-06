@@ -279,6 +279,17 @@ Remember, merging frequently doesn't mean exposing incomplete work. It's about i
 
 With feature flags, we can ensure that code deployed to `main` is production-ready, but only accessible when we decide the time is right. As a result, we get the best of both worlds: continuous integration and delivery of code, and the control to release new features when we're confident they're ready for all users.
 
+## Split.io Integration
+
+We utilize Split.io for feature flagging to enable controlled rollouts of new features. This aids us in mitigating risk and improving our system by allowing us to manage who sees what and when.
+
+The flags created on Split.io need to be synchronized with our application. For this, we use a daemon set up through Laravel Forge. This process continuously runs in the background and ensures that all the feature flags remain in sync with Split.io.
+
+To setup Split.io synchronization as a Forge daemon, use the following command: 
+
+```
+split-sync -apikey "your-split-io-secret-api-key"
+```
 
 # Monitoring and Logging
 
