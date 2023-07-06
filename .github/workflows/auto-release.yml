@@ -19,6 +19,7 @@ jobs:
           tag: ${{ github.event.pull_request.title }}
           body: ${{ github.event.pull_request.body }}
           prerelease: false
+          makeLatest: true
           # uses the default GitHub actions app token
           # github_token: ${{ secrets.GITHUB_TOKEN }} # https://github.com/settings/tokens
   postToSlack:
