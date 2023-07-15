@@ -114,14 +114,6 @@ Given the difference in build times between the backend (deployed via Envoyer) a
 
 To handle such situations, consider the following strategy:
 
-### Building Frontend Assets in GitHub Actions
-
-You can build the frontend assets as part of your GitHub Actions workflow. Once the build is complete, a subsequent step in your workflow could call the Envoyer webhook. This would trigger the backend deployment. At the same time, you can also pull the latest changes from the "main" branch on Netlify. This strategy ensures that both your backend and frontend are in sync when changes go live.
-
-## Backend and Frontend Deployment Procedure
-
-With this strategy, the deployment procedure would look like this:
-
 1. Ensure your changes are ready and tested in the appropriate branches.
 2. Merge your changes to the "main" branch.
 3. The merge triggers the CD pipeline. Before merging to "main", the code should pass all checks (unit & feature tests, static analysis, E2E tests, etc.).
