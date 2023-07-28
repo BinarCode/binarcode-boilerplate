@@ -71,6 +71,21 @@ We follow a [Trunk Based Development](https://cloud.google.com/architecture/devo
 
 📝 **Fill the PR Descriptions template**: Be concise and clear in your PR descriptions, use the profided template to fill it.
 
+### Code Reviews
+
+**As a PR owner**, there are 2 primary reasons for requesting a code review:
+
+1. **Early Direction Check**: You may wish to verify the direction of your work at an early stage. For this, open the PR as a `draft` and ask for a peer to check it. It should not be merged, and the draft status **should only be changed by the PR owner**.
+2. **Production Merge Request**: After you've verified changes on the staging environment (see the [How to test on staging](#how-to-verify-on-staging) section), you change the status from `draft` to `ready for review` and ask a peer to review the PR.
+
+**As a Reviewer:**
+
+1. **Leave Meaningful Comments**: You should leave meaningful comments and provide feedback based on SOLID principles or any other team guidelines. Always include a link to the relevant guideline when possible.
+2. **Mark as 'Commented'**: If you're okay with the changes but unsure about the overall business logic.
+3. **Mark as 'Rejected'**: If you believe that the changes are not ready for production.
+4. **Mark as 'Approved'**: If you believe that the changes are ready for production.
+
+
 ### Naming Conventions
 
 - Branch names should be concise, descriptive and reflect the task at hand, e.g., `feat/login-system`, `fix/password-reset`.
@@ -148,9 +163,6 @@ Here's the typical workflow for deploying to the staging environment:
 By following these steps, we can ensure that our staging environment is used for testing and validation, and the `main` branch always reflects a stable state of the application ready for production.
 
 ----
-
-
-
 
 ## Feature Flagging and Partial Deployments
 
