@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @return Str
  */
@@ -27,8 +26,6 @@ if (! function_exists('user')) {
 if (! function_exists('tests_path')) {
     /**
      * Get the path to the tests folder.
-     *
-     * @return string
      */
     function tests_path(string $path = ''): string
     {
