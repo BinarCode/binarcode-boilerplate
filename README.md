@@ -146,9 +146,9 @@ Here's the typical workflow for deploying to the staging environment:
 3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests.
 
 4. **Deploy to Staging**: After all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch `CE-1131`, you can go to Envoyer, find the [staging application](https://envoyer.io/projects), run deploy and choose your branch `CE-1131`:
-5. For the frontend, you access the [Netlify staging branches and deploy contexts](https://app.netlify.com/sites/staging-revamp/configuration/deploys#branches-and-deploy-contexts) and change the branch to match your current branch:
+5. For the frontend, you access the [Netlify staging branches and deploy contexts](https://app.netlify.com/sites/site-name/configuration/deploys#branches-and-deploy-contexts) and change the branch to match your current branch:
 
-Then go to [deploys](https://app.netlify.com/sites/staging-revamp/deploys) and trigger a new deploy manually:
+Then go to [deploys](https://app.netlify.com/sites/site-name/deploys) and trigger a new deploy manually:
 
 
 5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected.
