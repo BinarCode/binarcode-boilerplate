@@ -238,14 +238,6 @@ Our system generates three types of logs:
 
 3. **Errors**: Error logs indicate that something has gone wrong, such as a timeout or data loss. The system attempted an operation but had to give up. All errors generate an alert in our Slack channel and require a dedicated ticket for resolution. Sometimes, upon investigation, we might find that what was initially classified as an error is more appropriately a warning.
 
-### Slack Notifications
-
-Our system is set to send real-time notifications to a dedicated Slack channel in case of errors. Every error generates a unique alert to ensure no issue goes unnoticed.
-
-We developed a lightweight package to handle that called [laravel-developer](https://github.com/BinarCode/laravel-developer#send-exception-to-slack).
-
-For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
-
 ## The Purpose of Logging
 
 Logging serves several critical functions:
@@ -270,6 +262,8 @@ For monitoring, we utilize:
 
 - [Flare](https://flareapp.io/projects): Flare is a tool tailored for Laravel. It monitors logs and alerts us over Slack if any exceptions are thrown.
 
+- [New Relic](https://newrelic.com/): New Relic is a comprehensive web application performance service that monitors the behavior of your server-side applications, tracks user experiences, and displays all the data in real-time.
+
 ## Push exceptions to the consumer
 
 When the system cannot recover from an exception that originates in the domain (business) layer, this exception is pushed up to the consumer layer. The consumer (which might be Controllers, Restify, Queued Jobs, or Commands) then decides whether to log the exception or return it to the client. This approach allows us to effectively manage exceptions and maintain stability.
@@ -277,6 +271,16 @@ When the system cannot recover from an exception that originates in the domain (
 When the system can recover, you don't have to forward the exception to the consumer, you simply try/catch it in the domain layer and recover the system accordingly.
 
 ![DORA](public/docs/ddd-layers.png)
+
+### Dev Notifications
+
+Our system is set to send real-time notifications to a dedicated Slack channel in case of errors. These are sent by Flare, or the developer could send them manually using the [laravel-developer](https://github.com/BinarCode/laravel-developer#send-exception-to-slack) package like this:
+
+```php
+slack($e)->persist();
+```
+
+For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
 
 ## Backend
 
