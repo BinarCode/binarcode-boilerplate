@@ -118,45 +118,40 @@ Since we use Netlify for the frontend and Envoyer for the backend usually, let's
 
 ### CD - Backend
 
-Go in envoyer in the project settings and enable auto deploy when code is pushed:
+We use [envoyer](https://envoyer.io/) as a tool for the zero downtime deployment of our backend. To enable auto deployment on envoyer, you need to:
+
+- go in envoyer in the [project settings](https://envoyer.io/projects/69177/settings#/source-control) and enable auto deploy when code is pushed:
 
 ![CD](public/docs/envoyer-cd.png)
 
 
 ### CD - Frontend
 
-Given the difference in build times between the backend (deployed via Envoyer) and frontend (deployed via Netlify), it's possible for the backend changes to go live while the frontend is still building. If there are breaking changes between the two, it could lead to inconsistencies or issues.
+We use [netlify](https://app.netlify.com/) as a tool for the zero downtime deployment of our frontend. To enable auto deployment on netlify, we use a webhook that triggers the deployment when the code is deployed via envoyer, as part of the [deployment hooks](https://envoyer.io/projects/69177#/deployment-plan).
 
-To handle such situations, consider the following strategy:
+![Envoyer-netlify-hook](public/docs/envoyer-netlify-hook.png)
 
-1. Ensure your changes are ready and tested in the appropriate branches.
-2. Merge your changes to the "main" branch.
-3. The merge triggers the CD pipeline. Before merging to "main", the code should pass all checks (unit & feature tests, static analysis, E2E tests, etc.).
-4. Once all checks have passed, GitHub Actions will start building the frontend assets.
-5. After building the frontend, it will add assets into the release tag (say 1.2.0)
-6. The GitHub Actions workflow calls the Envoyer webhook, triggering the backend deployment.
-7. The last step in Envoyer will trigger the deploy on netlify wich will simply pull the assets built with gh action
-
-By using this procedure, you ensure that both backend and frontend are always in sync when deployed, minimizing potential issues for your users. Always ensure thorough testing before deploying and monitor your application closely after deployment for any unexpected issues.
-
+- To configure the webhook in netlify go [here](https://app.netlify.com/sites/project-name/configuration/deploys#build-hooks).
 
 ## How to verify on staging?
 
-Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time. 
+Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time.
 
 Here's the typical workflow for deploying to the staging environment:
 
-1. **Local Development**: Work on your feature or bug fix on your local machine, adhering to the guidelines mentioned in the Github Rules section. 
+1. **Local Development**: Work on your feature or bug fix on your local machine.
 
-2. **Create a Pull Request**: Once you've tested your changes locally, push your changes to a remote branch on GitHub and create a pull request to the `main` branch. Ensure that you have added the relevant unit tests and they are passing. 
+2. **Create a Pull Request**: Once you've tested your changes locally, push your changes to a remote branch on GitHub and create a pull request to the `main` branch. Ensure that you have added the relevant unit tests and the CI is passing.
 
-3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests (if present), and TSLint check on FE. The code is also reviewed by your peers during this time.
+3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests.
 
-4. **Deploy to Staging**: After your pull request has been approved and all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch BC-177, you can go to Envoyer, find the staging application, run deploy and choose your branch. For the frontend, you should either have a Netlify deploy preview or go to your app in Netlify and deploy it from your branch on staging. 
+4. **Deploy to Staging**: After all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch `CE-1131`, you can go to Envoyer, find the [staging application](https://envoyer.io/projects), run deploy and choose your branch `CE-1131`:
+5. For the frontend, you access the [Netlify staging branches and deploy contexts](https://app.netlify.com/sites/staging-revamp/configuration/deploys#branches-and-deploy-contexts) and change the branch to match your current branch:
 
-    This deployment strategy means that only one branch can be deployed to a staging environment at a time. To facilitate simultaneous testing by multiple teams, each team should have its own dedicated staging environment if they are all working on the same project.
+Then go to [deploys](https://app.netlify.com/sites/staging-revamp/deploys) and trigger a new deploy manually:
 
-5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected. 
+
+5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected.
 
 6. **Merge to Main**: After successful validation in the staging environment, merge your pull request to the `main` branch. The merge triggers the automated deployment to the production environment.
 
