@@ -282,6 +282,14 @@ slack($e)->persist();
 
 For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
 
+## Domains
+
+Our application uses the Domain Driven Design approach.
+
+If you don't know what that is, check out the [Domain Driven Design Quickly.pdf](https://drive.google.com/drive/u/1/my-drive) in the company's drive.
+
+![ddd-quickly](public/docs/ddd-quickly.png)
+
 ## Backend
 
 ### Setup
