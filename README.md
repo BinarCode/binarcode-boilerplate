@@ -118,45 +118,40 @@ Since we use Netlify for the frontend and Envoyer for the backend usually, let's
 
 ### CD - Backend
 
-Go in envoyer in the project settings and enable auto deploy when code is pushed:
+We use [envoyer](https://envoyer.io/) as a tool for the zero downtime deployment of our backend. To enable auto deployment on envoyer, you need to:
+
+- go in envoyer in the [project settings](https://envoyer.io/projects/69177/settings#/source-control) and enable auto deploy when code is pushed:
 
 ![CD](public/docs/envoyer-cd.png)
 
 
 ### CD - Frontend
 
-Given the difference in build times between the backend (deployed via Envoyer) and frontend (deployed via Netlify), it's possible for the backend changes to go live while the frontend is still building. If there are breaking changes between the two, it could lead to inconsistencies or issues.
+We use [netlify](https://app.netlify.com/) as a tool for the zero downtime deployment of our frontend. To enable auto deployment on netlify, we use a webhook that triggers the deployment when the code is deployed via envoyer, as part of the [deployment hooks](https://envoyer.io/projects/69177#/deployment-plan).
 
-To handle such situations, consider the following strategy:
+![Envoyer-netlify-hook](public/docs/envoyer-netlify-hook.png)
 
-1. Ensure your changes are ready and tested in the appropriate branches.
-2. Merge your changes to the "main" branch.
-3. The merge triggers the CD pipeline. Before merging to "main", the code should pass all checks (unit & feature tests, static analysis, E2E tests, etc.).
-4. Once all checks have passed, GitHub Actions will start building the frontend assets.
-5. After building the frontend, it will add assets into the release tag (say 1.2.0)
-6. The GitHub Actions workflow calls the Envoyer webhook, triggering the backend deployment.
-7. The last step in Envoyer will trigger the deploy on netlify wich will simply pull the assets built with gh action
-
-By using this procedure, you ensure that both backend and frontend are always in sync when deployed, minimizing potential issues for your users. Always ensure thorough testing before deploying and monitor your application closely after deployment for any unexpected issues.
-
+- To configure the webhook in netlify go [here](https://app.netlify.com/sites/project-name/configuration/deploys#build-hooks).
 
 ## How to verify on staging?
 
-Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time. 
+Given our single "main" branch approach, staging deployments are handled slightly differently to ensure that our main branch remains deployable at any time.
 
 Here's the typical workflow for deploying to the staging environment:
 
-1. **Local Development**: Work on your feature or bug fix on your local machine, adhering to the guidelines mentioned in the Github Rules section. 
+1. **Local Development**: Work on your feature or bug fix on your local machine.
 
-2. **Create a Pull Request**: Once you've tested your changes locally, push your changes to a remote branch on GitHub and create a pull request to the `main` branch. Ensure that you have added the relevant unit tests and they are passing. 
+2. **Create a Pull Request**: Once you've tested your changes locally, push your changes to a remote branch on GitHub and create a pull request to the `main` branch. Ensure that you have added the relevant unit tests and the CI is passing.
 
-3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests (if present), and TSLint check on FE. The code is also reviewed by your peers during this time.
+3. **Code Review & Continuous Integration**: The pull request triggers our continuous integration pipeline, which includes unit & feature tests, static analysis, E2E tests.
 
-4. **Deploy to Staging**: After your pull request has been approved and all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch BC-177, you can go to Envoyer, find the staging application, run deploy and choose your branch. For the frontend, you should either have a Netlify deploy preview or go to your app in Netlify and deploy it from your branch on staging. 
+4. **Deploy to Staging**: After all CI checks have passed, you may deploy your changes to the staging environment. For example, if you're working on branch `BC-112`, you can go to Envoyer, find the [staging application](https://envoyer.io/projects), run deploy and choose your branch `BC-112`:
+5. For the frontend, you access the [Netlify staging branches and deploy contexts](https://app.netlify.com/sites/site-name/configuration/deploys#branches-and-deploy-contexts) and change the branch to match your current branch:
 
-    This deployment strategy means that only one branch can be deployed to a staging environment at a time. To facilitate simultaneous testing by multiple teams, each team should have its own dedicated staging environment if they are all working on the same project.
+Then go to [deploys](https://app.netlify.com/sites/site-name/deploys) and trigger a new deploy manually:
 
-5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected. 
+
+5. **Staging Verification**: Once your changes have been deployed to staging, perform your validation and regression tests to ensure that everything works as expected.
 
 6. **Merge to Main**: After successful validation in the staging environment, merge your pull request to the `main` branch. The merge triggers the automated deployment to the production environment.
 
@@ -166,80 +161,31 @@ By following these steps, we can ensure that our staging environment is used for
 
 ## Feature Flagging and Partial Deployments
 
-Feature flagging is a powerful technique that allows developers to enable or disable features in their application, even after the code has been deployed to production. This is achieved by wrapping a piece of code or functionality with a conditional statement (the "flag") which checks whether the feature is enabled or not. 
+Feature flagging is a powerful technique that allows developers to enable or disable features in their application, even after the code has been deployed to production. This is achieved by wrapping a piece of code or functionality with a conditional statement (the "flag") which checks whether the feature is enabled or not.
 
 ### Benefits of Feature Flagging
 1. **Reduced Risk**: With feature flags, you can deploy code to production while it's still under development but hidden from users, thus mitigating the risk of introducing new bugs into the production environment.
 2. **Gradual Rollouts**: Feature flags enable you to gradually roll out a new feature to a subset of users, helping to minimize the impact of potential issues and making it easier to manage the release.
 3. **Testing in Production**: Feature flags can be used to perform A/B testing and Canary releases, which provide valuable insights about user behavior and preferences.
 
-### Using Laravel Pennant for Feature Flagging
-In the context of our Laravel project, we are using the Laravel Pennant package for feature flagging. Pennant allows you to define feature flags based on conditions and user attributes, providing a high degree of flexibility.
-
-Here is how to define a feature flag with Pennant:
-
-```php
-namespace App\Providers;
-
-use App\Models\User;
-use Illuminate\Support\Lottery;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Pennant\Feature;
-
-class AppServiceProvider extends ServiceProvider
-{
-    public function boot(): void
-    {
-        Feature::define('new-api', fn (User $user) => match (true) {
-            $user->isInternalTeamMember() => true,
-            $user->isHighTrafficCustomer() => false,
-            default => Lottery::odds(1 / 100),
-        });
-    }
-}
-```
-In the above example, the feature flag 'new-api' is defined, and it uses a callback function to decide whether the feature should be enabled for a particular user.
-
-To check whether a feature is enabled for a particular request, you can use the `Feature::active` method:
-
-```php
-class PodcastController
-{
-    public function index(Request $request): Response
-    {
-        return Feature::active('new-api')
-                ? $this->resolveNewApiResponse($request)
-                : $this->resolveLegacyApiResponse($request);
-    }
- 
-    // ...
-}
-```
-
-In the above code, if the 'new-api' feature is active, the new API response is resolved, otherwise, the legacy API response is resolved. This means that your application can have different behavior depending on whether a feature is enabled or not. 
-
-Feature flagging and partial deployments are a part of modern software delivery practices that can help teams reduce risk, get user feedback early, and adapt to changes quickly.
-
-# Approach to Implementing Large Features with Feature Flagging
-
-Feature flagging allows us to partially deploy larger features into production, enabling users to interact with a new feature while the rest of the feature is still in development.
-
+## Real use case for a large feature
 Let's consider an example: we are tasked to integrate the SignRequest functionality, allowing users to sign documents digitally.
 
-## Components
+### Components
 The following components are required for this feature:
 
 * SignRequest Facade for API calls
-* SignRequestDocument model 
+* SignRequestDocument model
 * Domain action CreateSignRequestDocumentAction
 * Custom exception SignRequestException
-* Logs using a custom channel `signrequest` 
-* A Restify action (RequestSignatureRestifyAction.php) to Request the signature 
+* Logs using a custom channel `signrequest`
+* A Restify action (RequestSignatureRestifyAction.php) to Request the signature
 
-## Steps for Partial Deployment using Feature Flagging
+### Steps
+
 1. **Development of core components**: Start by developing the core components such as the SignRequest Facade, documents model, and the logging system. These components do not directly impact the user interface and hence, can be developed without affecting the current app. And they can be merged into the trunk branch as soon they are ready.
 
-2. **Feature Flag**: Implement a feature flag for the new functionality using the Laravel Pennant package. The flag will be used to control the visibility of the new API endpoint. 
+2. **Feature Flag**: Implement a feature flag for the new functionality using the Laravel Pennant package. The flag will be used to control the visibility of the new API endpoint.
 
 3. **Restify Action**: Develop the RequestSignatureRestifyAction, which will be the point of exposure for the new feature. Ensure that this action is controlled by the feature flag, meaning it is only accessible when the feature flag is active.
 
@@ -262,40 +208,19 @@ public function actions(RestifyRequest $request): array
 
 6. **Full Deployment**: Once all components are developed and tested, fully enable the feature flag, making the new SignRequest functionality available to all users.
 
-Remember, while the non-interactive components (Facade, model, logs) are safe to deploy at any time, changes to user-facing components (like the Restify action) should always be protected with a feature flag to ensure that incomplete features are not exposed to all users prematurely.
-
-
-# Encouraging Frequent Deploys and Merges
-
-Developers are strongly encouraged to deploy and merge their code to the `main` branch frequently. This practice promotes more granular updates, allowing us to spot and address potential issues early in the development process.
-
-However, to ensure the stability and reliability of the production environment, features should only be fully activated when they are ready. 
-
-To handle this, we use **Feature Flagging**.
-
-## Feature Flagging
-
-Using feature flags (also known as "toggles" or "switches"), you can hide, enable or disable the feature in production as needed without having to redeploy the code. This provides the flexibility to merge code into `main` more frequently, while ensuring only complete and tested functionality is accessible to users.
-
-The feature flag allows us to control the feature's visibility, not only on a global level but also at a granular level, such as per user or group of users. This aids in conducting controlled tests in the production environment with a limited set of users before a full-scale rollout.
-
-Remember, merging frequently doesn't mean exposing incomplete work. It's about improving the project's code quality, reducing merge conflicts, and making it easier to find and fix bugs. 
-
-With feature flags, we can ensure that code deployed to `main` is production-ready, but only accessible when we decide the time is right. As a result, we get the best of both worlds: continuous integration and delivery of code, and the control to release new features when we're confident they're ready for all users.
-
 ## Split.io Integration
 
 We utilize Split.io for feature flagging to enable controlled rollouts of new features. This aids us in mitigating risk and improving our system by allowing us to manage who sees what and when.
 
 The flags created on Split.io need to be synchronized with our application. For this, we use a daemon set up through Laravel Forge. This process continuously runs in the background and ensures that all the feature flags remain in sync with Split.io.
 
-To setup Split.io synchronization as a Forge daemon, use the following command: 
+To setup [Split.io synchronization](https://help.split.io/hc/en-us/articles/360019686092-Split-Synchronizer) as a Forge daemon, use the following command:
 
 ```
 split-sync -apikey "your-split-io-secret-api-key"
 ```
 
-[Split sync docs](https://help.split.io/hc/en-us/articles/360019686092-Split-Synchronizer)
+-----
 
 # Monitoring and Logging
 
@@ -312,14 +237,6 @@ Our system generates three types of logs:
 2. **Warnings**: Warnings are generated when something doesn't go as smoothly as expected, but the system is still able to function—for example, when an API call retries due to a delay. These logs help us identify potential issues that might escalate if not addressed promptly.
 
 3. **Errors**: Error logs indicate that something has gone wrong, such as a timeout or data loss. The system attempted an operation but had to give up. All errors generate an alert in our Slack channel and require a dedicated ticket for resolution. Sometimes, upon investigation, we might find that what was initially classified as an error is more appropriately a warning.
-
-### Slack Notifications
-
-Our system is set to send real-time notifications to a dedicated Slack channel in case of errors. Every error generates a unique alert to ensure no issue goes unnoticed.
-
-We developed a lightweight package to handle that called [laravel-developer](https://github.com/BinarCode/laravel-developer#send-exception-to-slack).
-
-For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
 
 ## The Purpose of Logging
 
@@ -345,6 +262,8 @@ For monitoring, we utilize:
 
 - [Flare](https://flareapp.io/projects): Flare is a tool tailored for Laravel. It monitors logs and alerts us over Slack if any exceptions are thrown.
 
+- [New Relic](https://newrelic.com/): New Relic is a comprehensive web application performance service that monitors the behavior of your server-side applications, tracks user experiences, and displays all the data in real-time.
+
 ## Push exceptions to the consumer
 
 When the system cannot recover from an exception that originates in the domain (business) layer, this exception is pushed up to the consumer layer. The consumer (which might be Controllers, Restify, Queued Jobs, or Commands) then decides whether to log the exception or return it to the client. This approach allows us to effectively manage exceptions and maintain stability.
@@ -352,6 +271,24 @@ When the system cannot recover from an exception that originates in the domain (
 When the system can recover, you don't have to forward the exception to the consumer, you simply try/catch it in the domain layer and recover the system accordingly.
 
 ![DORA](public/docs/ddd-layers.png)
+
+### Dev Notifications
+
+Our system is set to send real-time notifications to a dedicated Slack channel in case of errors. These are sent by Flare, or the developer could send them manually using the [laravel-developer](https://github.com/BinarCode/laravel-developer#send-exception-to-slack) package like this:
+
+```php
+slack($e)->persist();
+```
+
+For warnings, to prevent notification flood, we use a throttling mechanism. The system sends a collective notification for the same warning every 'N' occurrences, keeping the team informed without creating noise. This approach helps maintain system transparency and efficiency.
+
+## Domains
+
+Our application uses the Domain Driven Design approach.
+
+If you don't know what that is, check out the [Domain Driven Design Quickly.pdf](https://drive.google.com/drive/u/1/my-drive) in the company's drive.
+
+![ddd-quickly](public/docs/ddd-quickly.png)
 
 ## Backend
 
