@@ -166,4 +166,3 @@ return [
      */
     'ai_solutions' => true,
 ];
-
