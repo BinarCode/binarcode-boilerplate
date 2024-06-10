@@ -112,7 +112,7 @@ return [
         'repository' => ActionLogRepository::class,
 
         /**
-         | Inform restify to log or not action logs.
+        | Inform restify to log or not action logs.
          */
         'enable' => env('RESTIFY_ENABLE_LOGS', true),
 
